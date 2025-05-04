@@ -11,17 +11,13 @@ indices = [
     {"symbol": "^NZ50", "name": "NZX 50", "market": "New Zealand"}
 ]
 
-def handler(request):
+def handler(event, context):
     result = []
     for index in indices:
         try:
             ticker = yf.Ticker(index["symbol"])
             hist = ticker.history(period="1d")
-            if hist.empty:
-                value = None
-            else:
-                value = round(float(hist["Close"].iloc[-1]), 2)
-
+            value = round(float(hist["Close"].iloc[-1]), 2) if not hist.empty else None
             result.append({
                 "symbol": index["symbol"],
                 "name": index["name"],
@@ -39,8 +35,6 @@ def handler(request):
 
     return {
         "statusCode": 200,
-        "body": json.dumps(result),
-        "headers": {
-            "Content-Type": "application/json"
-        }
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps(result)
     }
