@@ -1,9 +1,9 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/quote_all.py", "use": "@vercel/python" }
+    { "src": "api/index.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/api/quote/all", "dest": "api/quote_all.py" }
+    { "src": "/(.*)", "dest": "api/index.py" }
   ]
 }
