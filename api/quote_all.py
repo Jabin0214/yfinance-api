@@ -18,6 +18,7 @@ def handler(event, context):
             ticker = yf.Ticker(index["symbol"])
             hist = ticker.history(period="1d")
             value = round(float(hist["Close"].iloc[-1]), 2) if not hist.empty else None
+
             result.append({
                 "symbol": index["symbol"],
                 "name": index["name"],
@@ -35,6 +36,6 @@ def handler(event, context):
 
     return {
         "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(result)
+        "body": json.dumps(result),
+        "headers": {"Content-Type": "application/json"}
     }
